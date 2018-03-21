@@ -9,6 +9,15 @@
  
  ![49](https://user-images.githubusercontent.com/9403558/37556585-f373d02a-2a2a-11e8-9cd1-e0e0c643fca0.jpg)
  
+![tk32bit_diagram_v2](https://user-images.githubusercontent.com/9403558/37701027-1cc0fcda-2d20-11e8-8fea-e1986bf25d64.png)
+
+![arduinodue_front3](https://user-images.githubusercontent.com/9403558/37701060-3922921c-2d20-11e8-9a92-98f3d64b9404.png)
+
+![controlx](https://user-images.githubusercontent.com/9403558/37701104-64c4d380-2d20-11e8-99a1-7624189fc246.png)
+
+![mat_roll](https://user-images.githubusercontent.com/9403558/37701246-d2e48054-2d20-11e8-88aa-2b021274caf0.png)
+
+ 
  tinnakon_za@hotmail.com
  
  tinnakonza@gmail.com
