@@ -17,13 +17,16 @@
  
  https://www.facebook.com/tinnakonza
 
- 12/03/2561     write Due32bit_GY521MPU_1_V3  ,,2,3,4,5,6,7,8,9,10,11,// Roop time 1000Hz,,// Timer3 Interrupt handler
+ 12/03/2561     write Due32bit_GY521MPU_1_V3  ,,2,3,4,5,6,7,8,9,10,11,
  
+                                              // Roop time 1000Hz,,// Timer3 Interrupt handler
                                               ,velocity GPS Rotated Frame of arm gps
                                               ,Altitude control
  16/03/2561     write Due32bit_GY521MPU_1_V4  ,Observer_kalman_filter Z ,, Velocity_THR
  
- 21/03/2561     write Due32bit_GY521MPU_1_V5  ,Observer_kalman_filter X,Y
+ 21/03/2561     write Due32bit_GY521MPU_1_V5  
+                                               
+                                               ,Observer_kalman_filter X,Y
                                                ,RECIEVER CH_AILf, CH_ELEf ,targetRB_speedLAT ,targetRB_speedLON ,,cm/s
                                                ,double ,,float Lat,Lon error 9999999.9963922281796504452323604     
                                                ,,9999999.9995023947491795059296384
