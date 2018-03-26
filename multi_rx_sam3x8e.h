@@ -9,21 +9,21 @@ http://quad3d-tin.lnwshop.com/
 https://www.facebook.com/tinnakonza
 //clock timer7   (1000 - 2000 us) = (2625 - 5250) = 2625 
 */
-float CH_THR = 1000.0;
-float CH_AIL = 1500.0;
-float CH_ELE = 1500.0;
-float CH_RUD = 1500.0;
-float AUX_1 = 1000.0;
-float AUX_2 = 1000.0;
-float AUX_3 = 1000.0;
-float AUX_4 = 1000.0;
-float CH_THRf = 1000.0;
-float CH_AILf = 1500.0;
-float CH_ELEf = 1500.0;
-float CH_RUDf = 1500.0;
-int CH_AIL_Cal = 1500;
-int CH_ELE_Cal = 1500;
-int CH_RUD_Cal = 1500;
+float CH_THR = 1000.0f;
+float CH_AIL = 1500.0f;
+float CH_ELE = 1500.0f;
+float CH_RUD = 1500.0f;
+float AUX_1 = 1000.0f;
+float AUX_2 = 1000.0f;
+float AUX_3 = 1000.0f;
+float AUX_4 = 1000.0f;
+float CH_THRf = 1000.0f;
+float CH_AILf = 1500.0f;
+float CH_ELEf = 1500.0f;
+float CH_RUDf = 1500.0f;
+float CH_AIL_Cal = 1500.0f;
+float CH_ELE_Cal = 1500.0f;
+float CH_RUD_Cal = 1500.0f;
 
 //RX PIN assignment inside the port
 //SET YOUR PINS! TO MATCH RECIEVER CHANNELS
@@ -103,18 +103,18 @@ void configureReceiver() {
 }
 
 void computeRC() {
-  CH_THR = rcValue[THROTTLE]*0.3809523;// 84MHz/32 * 1500 us = 3937.5
-  CH_AIL = rcValue[ROLL]*0.3809523;
-  CH_ELE = rcValue[PITCH]*0.3809523;
-  CH_RUD = rcValue[YAW]*0.3809523;
-  AUX_1 = rcValue[AUX1]*0.3809523;
-  AUX_2 = rcValue[AUX2]*0.3809523;
-  AUX_3 = rcValue[CAMPITCH]*0.3809523;
-  AUX_4 = rcValue[CAMROLL]*0.3809523;
-  CH_THRf = CH_THRf + (CH_THR - CH_THRf) * 0.02 / tarremote; //Low pass filter
-  CH_AILf = CH_AILf + (CH_AIL - CH_AILf) * 0.02 / tarremote; //Low pass filter
-  CH_ELEf = CH_ELEf + (CH_ELE - CH_ELEf) * 0.02 / tarremote;
-  CH_RUDf = CH_RUDf + (CH_RUD - CH_RUDf) * 0.02 / tarremote;
+  CH_THR = rcValue[THROTTLE]*0.3809523f;// 84MHz/32 * 1500 us = 3937.5
+  CH_AIL = rcValue[ROLL]*0.3809523f;
+  CH_ELE = rcValue[PITCH]*0.3809523f;
+  CH_RUD = rcValue[YAW]*0.3809523f;
+  AUX_1 = rcValue[AUX1]*0.3809523f;
+  AUX_2 = rcValue[AUX2]*0.3809523f;
+  AUX_3 = rcValue[CAMPITCH]*0.3809523f;
+  AUX_4 = rcValue[CAMROLL]*0.3809523f;
+  CH_THRf = CH_THRf + (CH_THR - CH_THRf) * 0.02f / tarremote; //Low pass filter
+  CH_AILf = CH_AILf + (CH_AIL - CH_AILf) * 0.02f / tarremote; //Low pass filter
+  CH_ELEf = CH_ELEf + (CH_ELE - CH_ELEf) * 0.02f / tarremote;
+  CH_RUDf = CH_RUDf + (CH_RUD - CH_RUDf) * 0.02f / tarremote;
 }
 void RC_Calibrate() {
   Serial.print("RC_Calibrate"); Serial.print("\t");  //By tinnakon
