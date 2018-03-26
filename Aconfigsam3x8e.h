@@ -49,14 +49,17 @@ int M_Y_MAX = 510;     //397 513   563    546
 int M_Z_MIN = -420;    //-392 -363  -374   -377
 int M_Z_MAX = 360;     //346 386   429    502
 //GPS //สตาร์ท//////////////////////////////////////
-double GPS_LAT_HOME = 13.8681811d;//13.868180,100.496297 13868180
-double GPS_LON_HOME = 100.4962971d;
+double GPS_LAT_HOME = 13.8681811d;//13.8681811d ,13.868180,100.496297 13868180
+double GPS_LON_HOME = 100.4962971d;//100.4962971d
 //ลงจอด
-double waypoint1_LAT = 13.8681801d;//13.868544, 100.496433
+double waypoint1_LAT = 13.8681811d;//13.868544, 100.496433
 double waypoint1_LON = 100.4962971d;//B,
+/////////////////////////////
+double target_LAT = GPS_LAT_HOME;//13.8681811d ,13.868180 100.496297
+double target_LON = GPS_LON_HOME;//100.4962971d
 // Automatic take-off and landing 
 float h_control = 3.5f;  //2.7 0.6 0.9 meter
-float Altitude_Max = 10.0f;//max 10 meter
+float Altitude_Max = 20.0f;//max 20 meter
 //Parameter system Quadrotor/////////////////////////////////////////
 float m_quad = 1.18f;     //kg
 float L_quad = 0.235f;   //m quad+=0.25   I = (1/3)mL2 = 0.02291
@@ -76,22 +79,22 @@ float Ki_ratePitch = 0.12f;//1.12 2.75 0.5 - 2.8
 float Kd_ratePitch = 0.045f;//0.075 0.15 0.078 0.025 - 0.045
 
 float Kp_rateYaw = 2.75f;//2.75 3.75 5.75 1.75 - 3.450  350.0
-float Ki_rateYaw = 1.25f;//1.85 3.65  2.95
-float Kd_rateYaw = 0.065f;//0.095 0.035 0.065
+float Ki_rateYaw = 0.95f;//1.85 3.65  2.95
+float Kd_rateYaw = 0.085f;//0.095 0.035 0.065
 
 //PID--------------Stable
 float Kp_levelRoll= 4.95f;//4.2 6.2 7.8 9.2 
 
 float Kp_levelPitch= 4.95f;//4.2 6.2 9.2 
 
-float Kp_levelyaw= 5.15f;//4.2 4.5
+float Kp_levelyaw= 6.15f;//4.2 4.5
 
 //stat feedback--------------Altitude
 float Kp_altitude = 180.2f;//155.2 225.2 265.2  175.0  165.0
 float Ki_altitude = 11.45f;//2.1 12.25 52.13 2.13 0.018 2.5,0.0
 float Kd_altitude = 235.2f;//210.2 185.2 195.2 185.2 250 280.5 315.5 120
-float Kd2_altitude = 23.4f;//35.25 18.25 22.25 42.5 12.2 1.25
-float Ka_altitude = 0.0f;//8.5 18.5 26 32.5 38.5 41.5 35 25 - 45
+float Kd2_altitude = 33.4f;//23.4 35.25 18.25 22.25 42.5 12.2 1.25
+float Ka_altitude = 0.11f;//8.5 18.5 26 32.5 38.5 41.5 35 25 - 45
 //////////////////RC//////////////////////////////////
 //#define tarremote 0.025 // fast
 //#define tarremote 0.062  //0.092 slow 0.12 0.02 0.08 remote 
@@ -99,9 +102,9 @@ float tar = 0.011f; //0.012 0.015
 float tarremote = 0.065f;//0.095 0.065
 
 //PID GPS////////////////////////////////////////////
-float Kp_gps = 0.245f;//0.1405 0.245 0.15 0.101 2.101 5.101
+float Kp_gps = 0.135f;//0.1405 0.245 0.15 0.101 2.101 5.101
 float Ki_gps = 0.122f;//0.122 0.68 2.68 0.25 0.085 0.15
-float Kd_gps = 1.851f;//1.850 2.85 3.35 4.35 1.05 1.9 4.3 0.35 1.35 3.35
+float Kd_gps = 1.531f;//1.850 2.85 3.35 4.35 1.05 1.9 4.3 0.35 1.35 3.35
 float Kp_speed = 0.437f;//0.247 0.43 0.37 0.27 0.15 0.35 0.095 min 0.15
 
 #define Pin_Laser 2
@@ -138,8 +141,8 @@ float vx3_hat=0.0f;
 double vy1_hat=0.0d;
 float vy2_hat=0.0f;
 float vy3_hat=0.0f;
-double x1_hat = 13.86818012d;
-double y1_hat = 100.49629712d;
+double x1_hat = GPS_LAT_HOME;
+double y1_hat = GPS_LON_HOME;
 
 float z1_hat = 0.0f;
 float z2_hat = 0.0f;
@@ -179,15 +182,12 @@ float Control_XEf = 0.0f;
 float Control_YEf = 0.0f;
 float Control_XBf = 0.0f;
 float Control_YBf = 0.0f;
-double target_LAT = 13.8681811d;//13.868180 100.496297
-double target_LON = 100.4962971d;
-
 float targetRE_speedLAT = 0.0f;//vX Earth Frame
 float targetRE_speedLON = 0.0f;//vY Earth Frame
 //byte Read_command = 0;
 //float GPS_hz = 0.0;
 //float GPS_vz = 0.0;
-//float GPS_ground_course2 = 0.0;
+float yaw_bearing = 0.0f;
 //float GPS_Distance = 0.0;
 float error_LAT = 0.0f;
 float error_LON = 0.0f;  
@@ -239,6 +239,8 @@ long Dt_roop = 100;
 bool Status_LED = LOW;
 uint8_t ESC_calibra = 0;
 uint8_t Counter_LED_Auto = 0;
+double GPS_LAT_HOMEe = GPS_LAT_HOME;
+double GPS_LON_HOMEe = GPS_LON_HOME;
 //Baro//////////////////////////////////////////////
 //MS561101BA32bit baro = MS561101BA32bit();
 AP_Baro_MS5611 baro;
