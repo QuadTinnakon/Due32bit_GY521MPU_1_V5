@@ -42,10 +42,11 @@
  
  26/03/2561     write Due32bit_GY521MPU_1_V5_2  
  
-                                                ,Observer_kalman_filter X,Y
-                                               ,RECIEVER CH_AILf, CH_ELEf ,targetRB_speedLAT ,targetRB_speedLON ,,cm/s
-                                               ,double ,,float Lat,Lon error 9999999.9963922281796504452323604          ,,9999999.9995023947491795059296384
-                                               ,gain kp GPS ,,yaw_bearing,,k1 kalman Altitude,, uthrottle/cos_rollcos_pitch
+                              ,Observer_kalman_filter X,Y
+                              ,RECIEVER CH_AILf, CH_ELEf ,targetRB_speedLAT ,targetRB_speedLON ,,cm/s
+                              ,double ,,float Lat,Lon error 9999999.9963922281796504452323604   
+                              ,,9999999.9995023947491795059296384
+                              ,gain kp GPS ,,yaw_bearing,,k1 kalman Altitude,, uthrottle/cos_rollcos_pitch
  
 support : Arduino 1.5.8   Arduino Due 32 bit  , MPU6050  MS5611
 
