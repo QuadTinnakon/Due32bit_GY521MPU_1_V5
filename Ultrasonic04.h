@@ -89,7 +89,7 @@ if(z1_hat > 0.4f){//Altitude_sonaf
   Altitude_Baro_ult = Altitude_barof;
   Vz_Baro_ult = baro_vz;
   if(Mode == 2 || Mode == 3 && GPS_FIX  == 1){
-    Vz_Baro_ult = (float)vel_down*0.01f;//m/s
+    Vz_Baro_ult = (float)vel_down*0.01f;//m/s ,, GPS
   }
 }
 else{
