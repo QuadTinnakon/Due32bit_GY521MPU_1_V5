@@ -9,9 +9,10 @@
                                               ,velocity GPS Rotated Frame of arm gps
                                               ,Altitude control
  16/03/2561     write Due32bit_GY521MPU_1_V4  ,Observer_kalman_filter Z ,, Velocity_THR
- 21/03/2561     write Due32bit_GY521MPU_1_V5  ,Observer_kalman_filter X,Y
+ 26/03/2561     write Due32bit_GY521MPU_1_V5_2  ,Observer_kalman_filter X,Y
                                                ,RECIEVER CH_AILf, CH_ELEf ,targetRB_speedLAT ,targetRB_speedLON ,,cm/s
                                                ,double ,,float Lat,Lon error 9999999.9963922281796504452323604 ,,9999999.9995023947491795059296384
+                                               ,gain kp GPS ,,yaw_bearing,,k1 kalman Altitude,, uthrottle/cos_rollcos_pitch
  
 support : Arduino 1.5.8   Arduino Due 32 bit  , MPU6050  MS5611
 • Atmel SAM3X8E ARM Cortex-M3 CPU 32-bit a 84 MHz clock, ARM core microcontroller
@@ -54,7 +55,7 @@ A8 = PPM 8 CH
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void setup() {
   Serial.begin(57600);//115200
-  Serial.print("Due32bit_GY521MPU_1_V5.2");Serial.println("\n");
+  Serial.print("Due32bit_GY521MPU_1_V5.3");Serial.println("\n");
   GPS_multiInt();//"GPSNEO8N_multi.h"
   pinMode(13, OUTPUT);//pinMode
   pinMode(12, OUTPUT);
@@ -164,24 +165,24 @@ void loop() {
       mpu6050_readAccelSum();
 ////////////end 1000 Hz////////////////////////////////////////////////////////////////
       if (frameCounter % TASK_200HZ == 0){
-      G_Dt = 0.00499412191850192323635081509064;
+      G_Dt = 0.00500151f;
 /////get sensor////////////////////////////////////////////////////////////
       mpu6050_Get_accel();
       mpu6050_Get_gyro();
       baro._update(micros());
 ////////////////Moving Average Filters///////////////////////////
-      GyroXf = (GyroX + GyroX2)/2.0;
-      GyroYf = (GyroY + GyroY2)/2.0;
-      GyroZf = (GyroZ + GyroZ2)/2.0;
+      GyroXf = (GyroX + GyroX2)/2.0f;
+      GyroYf = (GyroY + GyroY2)/2.0f;
+      GyroZf = (GyroZ + GyroZ2)/2.0f;
       //AccXf = (AccX + AccX2)/2.0;
       //AccYf = (AccY + AccY2)/2.0;
       //AccZf = (AccZ + AccZ2)/2.0;
       //AccX2 = AccX;AccY2 = AccY;AccZ2 = AccZ;//acc Old1
       GyroX2 = GyroX;GyroY2 = GyroY;GyroZ2 = GyroZ;//gyro Old1
 ////////////////Low pass filter/////////////////////////////////
-    AccXf = AccXf + (AccX - AccXf)*0.12101;//0.240121 ,0.121  //Low pass filter ,smoothing factor  α := dt / (RC + dt)
-    AccYf = AccYf + (AccY - AccYf)*0.12101;//0.240121 ,0.121
-    AccZf = AccZf + (AccZ - AccZf)*0.12101;//0.240121 ,0.121
+    AccXf = AccXf + (AccX - AccXf)*0.12101f;//0.240121 ,0.121  //Low pass filter ,smoothing factor  α := dt / (RC + dt)
+    AccYf = AccYf + (AccY - AccYf)*0.12101f;//0.240121 ,0.121
+    AccZf = AccZf + (AccZ - AccZf)*0.12101f;//0.240121 ,0.121
 //////////////////////////////////////////////////////////
     ahrs_updateMARG(GyroXf, GyroYf, GyroZf, AccXf, AccYf, AccZf, c_magnetom_x, c_magnetom_y, c_magnetom_z, G_Dt);
 //quaternion ,direction cosine matrix ,Euler angles
@@ -210,7 +211,7 @@ void loop() {
   computeRC();//multi_rx.h
     if (CH_THR < MINCHECK)  //////ARM and DISARM your Quadrotor///////////////
         {
-            if (CH_RUD > MAXCHECK && armed == 0 && abs(ahrs_p) < 10.1 && abs(ahrs_r) < 10.1)//+- 10 deg, ARM 
+            if (CH_RUD > MAXCHECK && armed == 0 && abs(ahrs_p) < 10.1f && abs(ahrs_r) < 10.1f)//+- 10 deg, ARM 
             {
                 armed = 1;
                 digitalWrite(Pin_LED_R, HIGH);
@@ -248,10 +249,10 @@ void loop() {
         {
            presserf = getAvg(movavg_buff, MOVAVG_SIZE);
            temperaturetrf = getAvg(movavg_buffT, MOVAVG_SIZE);
-           presserfF = presserfF + (presserf - presserfF)*0.3852101;//0.9852101 0.785 0.685 0.545 0.345 Low Pass Filter
+           presserfF = presserfF + (presserf - presserfF)*0.3852101f;//0.9852101 0.785 0.685 0.545 0.345 Low Pass Filter
            Altitude_baro = getAltitude(presserfF,temperaturetrf);//Altitude_Ground
            Altitude_barof = Altitude_baro - Altitude_Ground + Altitude_II;
-           baro_vz = (Altitude_barof - baro_vz_old)/0.2;//G_Dt Diff Baro 5HZ=0.2 s  ,,20 Hz=0.05
+           baro_vz = (Altitude_barof - baro_vz_old)/0.2005012f;//G_Dt Diff Baro 5HZ=0.2 s  ,,20 Hz=0.05
            baro_vz_old = Altitude_barof;
            Cal_GPS();//#include "Control_PPIDsam3x8e.h"
            //GPS_distance_m_bearing(GPS_LAT1, GPS_LON1, GPS_LAT_HOME, GPS_LON_HOME, Altitude_hat);
@@ -294,8 +295,8 @@ void loop() {
             //Serial.print(failsafeCnt);Serial.print("\t");
             //Serial.print(targetRE_speedLAT);Serial.print("\t");
             //Serial.print(targetRE_speedLON);Serial.print("\t");
-            //Serial.print(target_LAT,8);Serial.print("\t");
-            //Serial.print(target_LON,8);Serial.print("\t");
+            Serial.print(target_LAT,8);Serial.print("\t");
+            Serial.print(target_LON,8);Serial.print("\t");
             //Serial.print(setpoint_rate_roll);Serial.print("\t");
             //Serial.print(setpoint_rate_pitch);Serial.print("\t"); 
              
@@ -332,17 +333,18 @@ void loop() {
             
             //Serial.print(m_per_deg_lon);Serial.print("\t");//m_per_deg_lon
             //Serial.print(velocity_north);Serial.print("\t");
-            //Serial.print(vx2_hat);Serial.print("\t");
+            Serial.print(vx2_hat);Serial.print("\t");
             
             //Serial.print(accrX_Earth);Serial.print("\t");
             //Serial.print(vx3_hat);Serial.print("\t");
 
             //Serial.print(velocity_east);Serial.print("\t");
             //Serial.print(gyroX_Earth*arm_GPS,0);Serial.print("\t");
-            //Serial.print(vy2_hat);Serial.print("\t");    
+            Serial.print(vy2_hat);Serial.print("\t");    
             //Serial.print(velocity_northf,0);Serial.print("\t");
             //Serial.print(velocity_eastf,0);Serial.print("\t");
-            //Serial.print(_vel_down);Serial.print("\t");
+            Serial.print(vel_down);Serial.print("\t");
+            Serial.print(z2_hat*100.0f);Serial.print("\t");
             
             //Serial.print(Control_XEf);Serial.print("\t");
             //Serial.print(Control_YEf);Serial.print("\t");
@@ -362,15 +364,14 @@ void loop() {
             //Serial.print(presserf,3);Serial.print("\t");
             //Serial.print(GPS_altitude);Serial.print("\t");
             //Serial.print(Altitude_baro);Serial.print("\t");
-            //Serial.print(Altitude_barof);Serial.print("\t");
-            //Serial.print(Altitude_sonaf);Serial.print("\t");
+            Serial.print(Altitude_barof);Serial.print("\t");
+            Serial.print(Altitude_sonaf);Serial.print("\t");
             //Serial.print(Altitude_sona);Serial.print("\t");
             //Serial.print(Altitude_Baro_ult);Serial.print("\t");
             //Serial.print(z1_hat);Serial.print("\t"); 
             
             //Serial.print(baro_vz);Serial.print("\t");
             //Serial.print(vz_sonaf);Serial.print("\t");
-            //Serial.print(z2_hat);Serial.print("\t");
             //Serial.print(vz_sona);Serial.print("\t");
             //Serial.print(Vz_Baro_ult);Serial.print("\t");
             //Serial.print(z2_hat);Serial.print("\t");
@@ -381,10 +382,10 @@ void loop() {
             //Serial.print(DCM12);Serial.print("\t");
             //Serial.print(DCM22);Serial.print("\t");
             //Serial.print(AccX);Serial.print("\t");
-            Serial.print(AccXf);Serial.print("\t");
+            //Serial.print(AccXf);Serial.print("\t");
             //Serial.print(AccXf2);Serial.print("\t");
             //Serial.print(AccY);Serial.print("\t");  
-            Serial.print(AccYf);Serial.print("\t"); 
+            //Serial.print(AccYf);Serial.print("\t"); 
             //Serial.print(AccZ);Serial.print("\t");
             //Serial.print(AccZf);Serial.print("\t"); 
             //Serial.print(AccZf2,3);Serial.print("\t");
@@ -452,6 +453,7 @@ void loop() {
             Serial.print(GPS_numSat);Serial.print("\t");
             //Serial.print(GPS_FIX);Serial.print("\t");
             Serial.print(GPSfix_type);Serial.print("\t");
+            Serial.print(yaw_bearing);Serial.print("\t");
             //Serial.print(Mode);Serial.print("\t");
             //Serial.print(Dt_roop);Serial.print("\t");
             //Serial.print(1/G_Dt);Serial.print("\t");
