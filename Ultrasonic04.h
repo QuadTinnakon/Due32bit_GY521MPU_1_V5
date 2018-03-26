@@ -1,5 +1,5 @@
 /*
-project_Quad 32 bit Arduino Due 
+project_Quad 32 bit Arduino Due Ultrasonic04.h
 //GPS
 1. stabilized quadrotor 
 by: tinnakon kheowree 
@@ -32,18 +32,18 @@ https://www.facebook.com/tinnakonza
 #define HCSR04_TriggerPin 27 // should be modified to 9  12 in next version
 #define HCSR04_EchoPin 26     // should be modified to 10  11 in next version
 
-float hz_Ultra = 0.0;
-float Altitude_sona = 0.0;
-float Altitude_sona2 = 0.0;
-float Altitude_sonaf = 0.0;
-float Altitude_sonaold = 0.0;
-float vz_sona = 0.0;
-float vz_sona2 = 0.0;
-float vz_sonaf = 0.0;
+float hz_Ultra = 0.0f;
+float Altitude_sona = 0.0f;
+float Altitude_sona2 = 0.0f;
+float Altitude_sonaf = 0.0f;
+float Altitude_sonaold = 0.0f;
+float vz_sona = 0.0f;
+float vz_sona2 = 0.0f;
+float vz_sonaf = 0.0f;
 
-float Altitude_II = 0.0;
-float Altitude_Baro_ult = 0.0;
-float Vz_Baro_ult = 0.0;
+float Altitude_II = 0.0f;
+float Altitude_Baro_ult = 0.0f;
+float Vz_Baro_ult = 0.0f;
 
 unsigned long HCSR04_startTime = 0;
 unsigned long HCSR04_echoTime = 0;
@@ -63,7 +63,7 @@ void UltaHandler() {
   else {
     HCSR04_echoTime = micros() - HCSR04_startTime;
     if (HCSR04_echoTime <= 25000)      // maximum = 4,31 meter - 30000 us means out of range
-      tempSonarAlt = HCSR04_echoTime / 5.8;//to mm
+      tempSonarAlt = HCSR04_echoTime / 5.8f;//to mm
     else
       tempSonarAlt = 4300;
   }
@@ -73,26 +73,29 @@ void UltrasonicRead()
   digitalWrite(HCSR04_TriggerPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(HCSR04_TriggerPin, LOW);
-  Altitude_sona = tempSonarAlt/1000.0;//m
+  Altitude_sona = tempSonarAlt/1000.0f;//m
   //Altitude_sonaf = (Altitude_sona + Altitude_sona2)/2.0;//filter
-  Altitude_sonaf = Altitude_sonaf + (((Altitude_sona + Altitude_sona2)/2.0) - Altitude_sonaf)*0.622012;//*0.687 filter 42 Hz
+  Altitude_sonaf = Altitude_sonaf + (((Altitude_sona + Altitude_sona2)/2.0f) - Altitude_sonaf)*0.622012f;//*0.687 filter 42 Hz
   Altitude_sona2 = Altitude_sona;
-  vz_sona = (Altitude_sonaf - Altitude_sonaold)/0.05;//diff 20 Hz = 0.05 s
+  vz_sona = (Altitude_sonaf - Altitude_sonaold)/0.0500050005f;//diff 20 Hz = 0.05 s
   Altitude_sonaold = Altitude_sonaf;
   //vz_sonaf = (vz_sona + vz_sona2)/2.0;//filter
   //vz_sonaf = vz_sonaf + (((vz_sona + vz_sona2)/2.0) - vz_sonaf)*0.62;//filter 42 Hz
   //vz_sona2 = vz_sona;
-  vz_sonaf = constrain(vz_sona, -3, 3);
+  vz_sonaf = constrain(vz_sona, -3.0f, 3.0f);
   //Altitude_sonano = constrain(Altitude_sonano, 0, 3.0);//m
-//Ultrasonic max 0.8 m change to Baro//////////////////////////////
-if(z1_hat > 0.8){//Altitude_sonaf
+//Ultrasonic max 0.6 m change to Baro//////////////////////////////
+if(z1_hat > 0.4f){//Altitude_sonaf
   Altitude_Baro_ult = Altitude_barof;
   Vz_Baro_ult = baro_vz;
+  if(Mode == 2 || Mode == 3 && GPS_FIX  == 1){
+    Vz_Baro_ult = (float)vel_down*0.01f;//m/s
+  }
 }
 else{
   float error_Altitude = Altitude_sonaf - Altitude_barof;
-  Altitude_II = Altitude_II + (error_Altitude*0.019501);//0.0185 0.005 ,,20 Hz = 0.05
-  Altitude_II = constrain(Altitude_II, -100, 100);
+  Altitude_II = Altitude_II + (error_Altitude*0.019501f);//0.0185 0.005 ,,20 Hz = 0.05
+  Altitude_II = constrain(Altitude_II, -100.0f, 100.0f);
   Altitude_Baro_ult = Altitude_sonaf;
   Vz_Baro_ult = vz_sonaf;
 }
@@ -116,7 +119,7 @@ float getAltitude(float pressure2, float temperature2)
 {
   //return (1.0f - pow(pressure2/sea_press, 0.190295f)) * 44330.0f;
   //return log(sea_press/pressure2) * (temperature2+273.15f) * 29.271267f; // in meter   1007.23 1008.83
-  return ((pow((sea_press/pressure2),1/5.257)-1.0)*(temperature2+273.15))/0.0065;
+  return ((pow((sea_press/pressure2),1/5.257f)-1.0f)*(temperature2+273.15f))/0.0065f;
 }
 void pushAvg(float val, float val2)
 {
@@ -126,7 +129,7 @@ void pushAvg(float val, float val2)
 }
 float getAvg(float * buff, int size)
 {
-  float sum=0.0;
+  float sum=0.0f;
   for(int i=0;i<size;i++)
   {
     sum += buff[i];
