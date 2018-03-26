@@ -16,23 +16,23 @@ int MOTOR_BackR_PIN = 6;// PWML4 = pin 9
 #define PWM_DUE_PERIOD 2500   // in us
 //#define PWM_PRESCALER 8
 //#define PWM_COUNTER_PERIOD (F_CPU/PWM_PRESCALER/PWM_FREQUENCY)
-float motor_FrontL = 1000;
-float motor_FrontR = 1000;
-float motor_BackL = 1000;
-float motor_BackR = 1000;
+float motor_FrontL = 1000.0f;
+float motor_FrontR = 1000.0f;
+float motor_BackL = 1000.0f;
+float motor_BackR = 1000.0f;
 //lag filter motor/
-float motor_FrontLf = 1000;
-float motor_FrontLold = 1000;
-float motor_FrontLold2 = 1000;
-float motor_FrontRf = 1000;
-float motor_FrontRold = 1000;
-float motor_FrontRold2 = 1000;
-float motor_BackLf = 1000;
-float motor_BackLold = 1000;
-float motor_BackLold2 = 1000;
-float motor_BackRf = 1000;
-float motor_BackRold = 1000;
-float motor_BackRold2 = 1000;
+float motor_FrontLf = 1000.0f;
+float motor_FrontLold = 1000.0f;
+float motor_FrontLold2 = 1000.0f;
+float motor_FrontRf = 1000.0f;
+float motor_FrontRold = 1000.0f;
+float motor_FrontRold2 = 1000.0f;
+float motor_BackLf = 1000.0f;
+float motor_BackLold = 1000.0f;
+float motor_BackLold2 = 1000.0f;
+float motor_BackRf = 1000.0f;
+float motor_BackRold = 1000.0f;
+float motor_BackRold2 = 1000.0f;
 ///////////////////////////////////////////////////////////////////////////////
 static void setPWMpin(uint32_t pin) {
   PIO_Configure(g_APinDescription[pin].pPort,
@@ -50,10 +50,10 @@ void motor_command_all()
 { 
   for (int j = 0 ; j <= 50 ; j++)
   {
-    motor_FrontL = 1000;
-    motor_FrontR = 1000;
-    motor_BackL = 1000;
-    motor_BackR = 1000;
+    motor_FrontL = 1000.0f;
+    motor_FrontR = 1000.0f;
+    motor_BackL = 1000.0f;
+    motor_BackR = 1000.0f;
   PWMC_SetDutyCycle(PWM, 4, 1000);
   PWMC_SetDutyCycle(PWM, 5, 1000);
   PWMC_SetDutyCycle(PWM, 6, 1000);
@@ -117,10 +117,10 @@ void ESC_calibration() {
   int jprint = 0;
   while(ESC_calibra == 1){
    computeRC();
-   motor_FrontL = (CH_THR - 500)*1.5;
-   motor_FrontR = (CH_THR - 500)*1.5;
-   motor_BackL = (CH_THR - 500)*1.5;
-   motor_BackR = (CH_THR - 500)*1.5;
+   motor_FrontL = (CH_THR - 500.0f)*1.5f;
+   motor_FrontR = (CH_THR - 500.0f)*1.5f;
+   motor_BackL = (CH_THR - 500.0f)*1.5f;
+   motor_BackR = (CH_THR - 500.0f)*1.5f;
    
    motor_FrontL = constrain(motor_FrontL, MINCOMMAND, MAXCOMMAND);
    motor_FrontR = constrain(motor_FrontR, MINCOMMAND, MAXCOMMAND);
@@ -185,10 +185,10 @@ void motor_Lag(){
 }
 */
 void motor_Mix(){
-      motor_FrontL = uAltitude + u_pitch*0.7071 + u_roll*0.7071 - u_yaw*0.5;//Front L , cos45 = 0.7071
-      motor_FrontR = uAltitude + u_pitch*0.7071 - u_roll*0.7071 + u_yaw*0.5;//Front R
-      motor_BackL = uAltitude - u_pitch*0.7071 + u_roll*0.7071 + u_yaw*0.5;//Back L
-      motor_BackR = uAltitude - u_pitch*0.7071 - u_roll*0.7071 - u_yaw*0.5;////Back R
+      motor_FrontL = uAltitude*0.97f + u_pitch*0.7071f + u_roll*0.7071f - u_yaw*0.5f;//Front L , cos45 = 0.7071
+      motor_FrontR = uAltitude*0.97f + u_pitch*0.7071f - u_roll*0.7071f + u_yaw*0.5f;//Front R
+      motor_BackL = uAltitude*0.97f - u_pitch*0.7071f + u_roll*0.7071f + u_yaw*0.5f;//Back L
+      motor_BackR = uAltitude*0.97f - u_pitch*0.7071f - u_roll*0.7071f - u_yaw*0.5f;////Back R
 /*
 #ifdef Quad_P
       motor_Front = uAltitude + u_pitch - u_yaw;
@@ -203,13 +203,13 @@ void motor_Mix(){
 */
        if (CH_THR < MINTHROTTLE)
         {
-          roll_I_rate = 0;
-          pitch_I_rate = 0;
-          yaw_I_rate = 0;
-          motor_FrontL = 1000;
-          motor_FrontR = 1000;
-          motor_BackL = 1000;
-          motor_BackR = 1000;
+          roll_I_rate = 0.0f;
+          pitch_I_rate = 0.0f;
+          yaw_I_rate = 0.0f;
+          motor_FrontL = 1000.0f;
+          motor_FrontR = 1000.0f;
+          motor_BackL = 1000.0f;
+          motor_BackR = 1000.0f;
         }
         if(armed == 1)
         {
@@ -221,9 +221,9 @@ void motor_Mix(){
         }
         else
         {
-          motor_FrontLf = 1000;//set PWM data (1000 - 2000)*2 to (2000 - 4000)
-          motor_FrontRf = 1000;
-          motor_BackLf = 1000;
-          motor_BackRf = 1000;
+          motor_FrontLf = 1000.0f;//set PWM data (1000 - 2000)*2 to (2000 - 4000)
+          motor_FrontRf = 1000.0f;
+          motor_BackLf = 1000.0f;
+          motor_BackRf = 1000.0f;
         }
 }
