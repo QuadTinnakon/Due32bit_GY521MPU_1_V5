@@ -14,8 +14,8 @@ https://www.facebook.com/tinnakonza
 #define ZAXIS 2
 float gyro[3];
 float accel[3];
-float gyroScaleFactor = radians(2000.0/32768.0);//32768.0 32730 , +-32756  32768.0
-float accelScaleFactor = 9.80665;//9.80665/4100.62 9.81/8192.09 9.81 / 8205  
+float gyroScaleFactor = radians(2000.0f/32768.0f);//32768.0 32730 , +-32756  32768.0
+float accelScaleFactor = 9.80665f;//9.80665/4100.62 9.81/8192.09 9.81 / 8205  
 uint8_t gyroSamples = 0;
 uint8_t gyroSamples2 = 0;
 uint8_t accSamples = 0;
@@ -30,11 +30,11 @@ float AccXf,AccYf,AccZf;
 float AccX2,AccY2,AccZ2;
 float GyroXf,GyroYf,GyroZf;
 float gyro_offsetX,gyro_offsetY,gyro_offsetZ,acc_offsetX,acc_offsetY,acc_offsetZ;
-float acc_offsetZ2 = 9.81;
+float acc_offsetZ2 = 9.80665f;
 float GyroX,GyroY,GyroZ,GyroTemp;
 float GyroX2,GyroY2,GyroZ2;
-float Accel[3] = {0.0,0.0,0.0};
-float filteredAccel[3] = {0.0,0.0,0.0};
+float Accel[3] = {0.0f,0.0f,0.0f};
+float filteredAccel[3] = {0.0f,0.0f,0.0f};
 
 //sensor MPU6050 -------------------------------------
 // MPU 6050 Registers
@@ -96,10 +96,10 @@ float filteredAccel[3] = {0.0,0.0,0.0};
 //sensor ---------------------
 #define applyDeadband(value,deadband)   \
   if(fabs(value) < deadband) {          \
-    value = 0.0;                        \
-  } else if(value > 0.0){               \
+    value = 0.0f;                        \
+  } else if(value > 0.0f){               \
     value -= deadband;                  \
-  } else if(value < 0.0){               \
+  } else if(value < 0.0f){               \
     value += deadband;                  \
   }
 void mpu6050_initialize()
@@ -176,9 +176,9 @@ void mpu6050_Accel_Values()
     accelRaw[YAXIS] = ((result[2] << 8) | result[3]) + 40;// - 45 - 35      max=4129.57, min=-4070.64
     accelRaw[ZAXIS] = ((result[4] << 8) | result[5]) - 237;// + 150 + 170    max=4014.73 , min=-4165.13
      // adjust for  acc axis offsets/sensitivity differences by scaling to +/-1 g range
-  AccXm = ((float)(accelRaw[XAXIS] - A_X_MIN) / (A_X_MAX - A_X_MIN))*2.0 - 1.0;
-  AccYm = ((float)(accelRaw[YAXIS] - A_Y_MIN) / (A_Y_MAX - A_Y_MIN))*2.0 - 1.0;
-  AccZm = ((float)(accelRaw[ZAXIS] - A_Z_MIN) / (A_Z_MAX - A_Z_MIN))*2.0 - 1.0;
+  AccXm = ((float)(accelRaw[XAXIS] - A_X_MIN) / (A_X_MAX - A_X_MIN))*2.0f - 1.0f;
+  AccYm = ((float)(accelRaw[YAXIS] - A_Y_MIN) / (A_Y_MAX - A_Y_MIN))*2.0f - 1.0f;
+  AccZm = ((float)(accelRaw[ZAXIS] - A_Z_MIN) / (A_Z_MAX - A_Z_MIN))*2.0f - 1.0f;
 }
 void mpu6050_readGyroSum() {
     mpu6050_Gyro_Values();
@@ -195,9 +195,9 @@ void mpu6050_Get_gyro()
     GyroX = (gyroSum[XAXIS] / gyroSamples)*gyroScaleFactor - gyro_offsetX;// Calculate average
     GyroY = (gyroSum[YAXIS] / gyroSamples)*gyroScaleFactor - gyro_offsetY;
     GyroZ = (gyroSum[ZAXIS] / gyroSamples)*gyroScaleFactor - gyro_offsetZ;            
-    gyroSum[XAXIS] = 0.0;// Reset SUM variables
-    gyroSum[YAXIS] = 0.0;
-    gyroSum[ZAXIS] = 0.0;
+    gyroSum[XAXIS] = 0.0f;// Reset SUM variables
+    gyroSum[YAXIS] = 0.0f;
+    gyroSum[ZAXIS] = 0.0f;
     gyroSamples2 = gyroSamples;
     gyroSamples = 0;            
 }
@@ -216,21 +216,21 @@ void mpu6050_Get_accel()
     AccX = (accelSum[XAXIS] / accSamples)*accelScaleFactor - acc_offsetX;// Calculate average
     AccY = (accelSum[YAXIS] / accSamples)*accelScaleFactor - acc_offsetY;
     AccZ = (accelSum[ZAXIS] / accSamples)*accelScaleFactor;// Apply correct scaling (at this point accel reprensents +- 1g = 9.81 m/s^2)
-    accelSum[XAXIS] = 0.0;    // Reset SUM variables
-    accelSum[YAXIS] = 0.0;
-    accelSum[ZAXIS] = 0.0; 
+    accelSum[XAXIS] = 0.0f;    // Reset SUM variables
+    accelSum[YAXIS] = 0.0f;
+    accelSum[ZAXIS] = 0.0f; 
     accSamples = 0;   
 }
 void sensor_Calibrate()
 {
     Serial.print("Sensor_Calibrate");Serial.println("\t");
-    gyroSum[XAXIS] = 0.0;// Reset SUM variables
-    gyroSum[YAXIS] = 0.0;
-    gyroSum[ZAXIS] = 0.0;
+    gyroSum[XAXIS] = 0.0f;// Reset SUM variables
+    gyroSum[YAXIS] = 0.0f;
+    gyroSum[ZAXIS] = 0.0f;
     gyroSamples = 0;  
-    accelSum[XAXIS] = 0.0;    // Reset SUM variables
-    accelSum[YAXIS] = 0.0;
-    accelSum[ZAXIS] = 0.0; 
+    accelSum[XAXIS] = 0.0f;    // Reset SUM variables
+    accelSum[YAXIS] = 0.0f;
+    accelSum[ZAXIS] = 0.0f; 
     for (uint8_t i=0; i<45; i++) //Collect 60, 100 samples
     {
         Serial.print("- ");
@@ -271,8 +271,8 @@ void sensor_Calibrate()
     Serial.print(MagXf);Serial.print("\t");
     Serial.print(MagYf);Serial.print("\t");
     Serial.print(MagZf);Serial.println("\t");
-acc_offsetX = 0.02;//-0.18 0.11 -0.36  Trim PITCH CONTROL   -10.07	-10.55	-9.82
-acc_offsetY = 0.09;//0.16 -0.14 0.18 Trim ROLL CONTROL     10.39	9.74	11
+acc_offsetX = 0.02f;//-0.18 0.11 -0.36  Trim PITCH CONTROL   -10.07	-10.55	-9.82
+acc_offsetY = 0.09f;//0.16 -0.14 0.18 Trim ROLL CONTROL     10.39	9.74	11
 //acc_offsetZ = 0.0;//0.245 0.235 10.2
 }
 /* ******************************************************************
@@ -289,7 +289,7 @@ acc_offsetY = 0.09;//0.16 -0.14 0.18 Trim ROLL CONTROL     10.39	9.74	11
  ////Trim ROLL CONTROL/////////////
       if(CH_AIL > MAXCHECK)
       {
-        acc_offsetY = acc_offsetY + 0.04;
+        acc_offsetY = acc_offsetY + 0.04f;
            for (int i = 0; i < 5; i++)
            {
             digitalWrite(13, HIGH);
@@ -301,7 +301,7 @@ acc_offsetY = 0.09;//0.16 -0.14 0.18 Trim ROLL CONTROL     10.39	9.74	11
       }
       if(CH_AIL < MINCHECK)
       {
-        acc_offsetY = acc_offsetY - 0.04;
+        acc_offsetY = acc_offsetY - 0.04f;
            for (int i = 0; i < 5; i++)
            {
             digitalWrite(13, HIGH);
@@ -314,7 +314,7 @@ acc_offsetY = 0.09;//0.16 -0.14 0.18 Trim ROLL CONTROL     10.39	9.74	11
  ///////Trim PITCH CONTROL//////////////////////
          if(CH_ELE > MAXCHECK)
       {
-        acc_offsetX = acc_offsetX + 0.04;
+        acc_offsetX = acc_offsetX + 0.04f;
            for(int i = 0; i < 5; i++)
            {
             digitalWrite(13, HIGH);
@@ -326,7 +326,7 @@ acc_offsetY = 0.09;//0.16 -0.14 0.18 Trim ROLL CONTROL     10.39	9.74	11
       }
       if(CH_ELE < MINCHECK)
       {
-        acc_offsetX = acc_offsetX - 0.04;
+        acc_offsetX = acc_offsetX - 0.04f;
            for(int i = 0; i < 5; i++)
            {
             digitalWrite(13, HIGH);
