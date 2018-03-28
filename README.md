@@ -16,6 +16,8 @@
 
 ![arduinodue_front3](https://user-images.githubusercontent.com/9403558/37701060-3922921c-2d20-11e8-9a92-98f3d64b9404.png)
 
+![gps](https://user-images.githubusercontent.com/9403558/38019194-208b6874-32a1-11e8-9066-3a5f0437b355.png)
+
 ![controlx](https://user-images.githubusercontent.com/9403558/37701104-64c4d380-2d20-11e8-99a1-7624189fc246.png)
 
 ![mat_roll](https://user-images.githubusercontent.com/9403558/37701246-d2e48054-2d20-11e8-88aa-2b021274caf0.png)
