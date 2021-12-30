@@ -23,7 +23,6 @@ support : Arduino 1.5.8   Arduino Due 32 bit  , MPU6050  MS5611
 
 Timer
 timer 7 TC2-1  use read ppm
-
 Quad-X
 pin 9 FRONTL  M1CW        M2CCW  FRONTR pin 8
               \         / 
@@ -129,7 +128,7 @@ void setup() {
        GPS_UBLOX_newFrame(byteGPS1);
        }
        //GPS_LAT1 = GPS_coordLAT*1e-7;///10000000.0 1e-7 degrees / position as degrees (*10E7)
-       //GPS_LON1 = GPS_coordLON*1e-7;
+       //GPS_LON1 = GPS_coordLON*1e-7;//
        GPS_LAT_HOME = GPS_coordLAT*1e-7;
        GPS_LON_HOME = GPS_coordLON*1e-7;
        digitalWrite(Pin_LED_B, LOW);
@@ -450,10 +449,10 @@ void loop() {
             //Serial.print(motor_Left);Serial.print("\t");
             //Serial.print(motor_Right);Serial.print("\t");
             
-            Serial.print(GPS_numSat);Serial.print("\t");
+            //Serial.print(GPS_numSat);Serial.print("\t");
             //Serial.print(GPS_FIX);Serial.print("\t");
-            Serial.print(GPSfix_type);Serial.print("\t");
-            Serial.print(yaw_bearing);Serial.print("\t");
+            //Serial.print(GPSfix_type);Serial.print("\t");
+            //Serial.print(yaw_bearing);Serial.print("\t");
             //Serial.print(Mode);Serial.print("\t");
             //Serial.print(Dt_roop);Serial.print("\t");
             //Serial.print(1/G_Dt);Serial.print("\t");
