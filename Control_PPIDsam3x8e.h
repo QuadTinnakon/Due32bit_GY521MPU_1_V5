@@ -105,7 +105,7 @@ float setpoint_rate_yaw = (CH_RUDf-CH_RUD_Cal)*0.42f;//0.55 0.4 0.35
     hz_I = hz_I + (Ki_altitude*err_hz*G_Dt);
     hz_I = constrain(hz_I, -100.0f, 600.0f);//+-600
     float uthrottle2 = (err_hz*Kp_altitude) + hz_I + (error_Vz*Kd_altitude) + (hz_D_rate*Kd2_altitude) - (z3_hat*Ka_altitude);
-    //state feedback + PID + adaptive controller + Kalman filter //
+    //state feedback + PID + adaptive controller + Kalman filter //https://li01.tci-thaijo.org/index.php/rmutsb-sci/article/view/149110/116850
     //uthrottle = uthrottle2*m_quad/(cos_roll*cos_pitch);// = u*m*d/b*(cosr*cosp)     ,m*d/b = 122.33  (cos_roll*cos_pitch)
     uthrottle = uthrottle2*m_quad;//  /cos_rollcos_pitch
   }
