@@ -26,6 +26,7 @@ https://www.facebook.com/tinnakonza
 void Observer_kalman_filter()
 {
  u_z = ((motor_FrontLf + motor_FrontRf + motor_BackLf + motor_BackRf) - 4000.0f)*0.00630057f - 8.81f;//1557us = 1.16kg  uz - g ,,unit N *0.001691) - 9.81
+ //u_z อาจจะผิด ต้องใช้ค่า uthrottle //
  u_zdot = (u_z - u_zold)/(G_Dt*DCM22);
  u_zold = u_z;
  u_Xdot = u_zdot*DCM02*-100.0f;
