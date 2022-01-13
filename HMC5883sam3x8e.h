@@ -43,7 +43,7 @@ void Mag5883Read()
 {
   Wire1.beginTransmission(HMC5883_Address);
   Wire1.write(HMC5883_REG_DATA_OUTPUT_X_MSB);
-  Wire1.requestFrom(HMC5883_Address, 6);
+  Wire1.requestFrom(HMC5883_Address, 6); //ปัญหา ถ้าสายไฟหลุด โปรแกรมจะค้างตรงนี้ รออ่านค่า เข็มทิศ
   byte result[6];
   //while (Wire1.available() < 6);
     result[0] = Wire1.read(); 
