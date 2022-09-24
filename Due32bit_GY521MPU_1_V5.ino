@@ -54,7 +54,7 @@ A8 = PPM 8 CH
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void setup() {
   Serial.begin(57600);//115200
-  Serial.print("Due32bit_GY521MPU_1_V5.3");Serial.println("\n");
+  Serial.print("Due32bit_GY521MPU_1_V5.1");Serial.println("\n");
   GPS_multiInt();//"GPSNEO8N_multi.h"
   pinMode(13, OUTPUT);//pinMode
   pinMode(12, OUTPUT);
