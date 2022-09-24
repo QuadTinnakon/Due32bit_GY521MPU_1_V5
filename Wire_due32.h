@@ -114,8 +114,8 @@ private:
 	uint32_t twiClock;
 
 	// Timeouts (
-	static const uint32_t RECV_TIMEOUT = 100000;
-	static const uint32_t XMIT_TIMEOUT = 100000;
+	static const uint32_t RECV_TIMEOUT = 1000;
+	static const uint32_t XMIT_TIMEOUT = 1000;
 };
 
 #if WIRE_INTERFACES_COUNT > 0
