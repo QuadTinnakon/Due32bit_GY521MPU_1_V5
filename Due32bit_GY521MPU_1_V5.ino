@@ -80,7 +80,7 @@ void setup() {
   delay(10);
   mpu6050_initialize();
   delay(30); //GYROSCOPE START-UP TIME 30 ms
-  //MagHMC5883Int();
+  MagHMC5883Int();
   Serial.print("HMC5883_initialize");Serial.print("\n");
   delay(10);
   SPI.begin();
