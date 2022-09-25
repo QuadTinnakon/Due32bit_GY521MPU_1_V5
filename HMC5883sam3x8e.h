@@ -44,19 +44,29 @@ void Mag5883Read()
   Wire1.beginTransmission(HMC5883_Address);
   Wire1.write(HMC5883_REG_DATA_OUTPUT_X_MSB);
   Wire1.requestFrom(HMC5883_Address, 6); //ปัญหา ถ้าสายไฟหลุด โปรแกรมจะค้างตรงนี้ รออ่านค่า เข็มทิศ
+  int i = 0;
   byte result[6];
   //while (Wire1.available() < 6);
-    result[0] = Wire1.read(); 
-    result[1] = Wire1.read();
-    result[2] = Wire1.read();
-    result[3] = Wire1.read();
-    result[4] = Wire1.read();
-    result[5] = Wire1.read();  
+    while(Wire1.available())    
+  { 
+    result[i] = Wire1.read(); 
+    i++;
+  }
+    //result[0] = Wire1.read(); 
+    //result[1] = Wire1.read();
+    //result[2] = Wire1.read();
+    //result[3] = Wire1.read();
+    //result[4] = Wire1.read();
+    //result[5] = Wire1.read();  
   Wire1.endTransmission();
-  //Wire1.endTransmission();
   MagY1 = (result[0] << 8) | result[1];//X 
   MagZ1 = (result[2] << 8) | result[3];
   MagX1 = ((result[4] << 8) | result[5])*-1;//Y
+  if(MagY1 > 4000 || MagZ1 > 4000 || MagX1 > 4000){
+    MagX1 = 1;
+    MagY1 = 1;
+    MagZ1 = 1;
+  }
   MagXf = MagXf + (MagX1 - MagXf)*0.45;//0.45
   MagYf = MagYf + (MagY1 - MagYf)*0.45;
   MagZf = MagZf + (MagZ1 - MagZf)*0.45;
