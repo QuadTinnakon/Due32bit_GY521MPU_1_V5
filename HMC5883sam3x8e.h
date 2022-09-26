@@ -63,7 +63,7 @@ void Mag5883Read()
   MagY1 = (result[0] << 8) | result[1];//X 
   MagZ1 = (result[2] << 8) | result[3];
   MagX1 = ((result[4] << 8) | result[5])*-1;//Y
-  if(MagY1 > 4000 || MagZ1 > 4000 || MagX1 > 4000){
+  if(abs(MagY1) > 1000 || abs(MagZ1) > 1000 || abs(MagX1) > 1000){
     MagX1 = 1;
     MagY1 = 1;
     MagZ1 = 1;
