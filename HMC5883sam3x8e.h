@@ -23,7 +23,8 @@ void MagHMC5883Int()
 {
   Wire1.beginTransmission(HMC5883_Address); //open communication with HMC5883
   Wire1.write(0x00); //Configuration Register A
-  Wire1.write(0x78); //num samples: 8 ; output rate: 15Hz ; normal measurement mode
+  Wire1.write(0x18);// measurement output.1 ,, 75 Hz , Normal measurement
+  //Wire1.write(0x78); //num samples: 8 ; output rate: 15Hz ; normal measurement mode
   Wire1.endTransmission();
   delay(10);
   Wire1.beginTransmission(HMC5883_Address); //open communication with HMC5883
@@ -41,12 +42,12 @@ void MagHMC5883Int()
 
 void Mag5883Read()
 {
-  Wire1.beginTransmission(HMC5883_Address);
-  Wire1.write(HMC5883_REG_DATA_OUTPUT_X_MSB);
-  Wire1.requestFrom(HMC5883_Address, 6); //ปัญหา ถ้าสายไฟหลุด โปรแกรมจะค้างตรงนี้ รออ่านค่า เข็มทิศ
   int i = 0;
   byte result[6];
-  //while (Wire1.available() < 6);
+  Wire1.beginTransmission(HMC5883_Address);
+  Wire1.write(HMC5883_REG_DATA_OUTPUT_X_MSB);
+  Wire1.endTransmission();
+  Wire1.requestFrom(HMC5883_Address, 6); //ปัญหา ถ้าสายไฟหลุด โปรแกรมจะค้างตรงนี้ รออ่านค่า เข็มทิศ
     while(Wire1.available())    
   { 
     result[i] = Wire1.read(); 
