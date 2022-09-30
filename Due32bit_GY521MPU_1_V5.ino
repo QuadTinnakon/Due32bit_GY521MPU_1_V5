@@ -302,11 +302,11 @@ void loop() {
             //Serial.print(setpoint_rate_pitch);Serial.print("\t"); 
              
             //Serial.print(MagX1);Serial.print("\t");
-            //Serial.print(MagXf);Serial.print("\t");
+            Serial.print(MagXf);Serial.print("\t");
             //Serial.print(MagY1);Serial.print("\t");
-            //Serial.print(MagYf);Serial.print("\t");
+            Serial.print(MagYf);Serial.print("\t");
             //Serial.print(MagZ1);Serial.print("\t");  
-            //Serial.print(MagZf);Serial.print("\t");
+            Serial.print(MagZf);Serial.print("\t");
             
             //Serial.print(c_magnetom_x);Serial.print("\t");
             //Serial.print(c_magnetom_y);Serial.print("\t");
