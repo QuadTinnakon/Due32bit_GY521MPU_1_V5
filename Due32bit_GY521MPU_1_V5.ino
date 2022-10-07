@@ -421,9 +421,9 @@ void loop() {
             //Serial.print(gyroY_Earth);Serial.print("\t");
             //Serial.print(gyroZ_Earth);Serial.print("\t");
             
-            //Serial.print(ahrs_r*RAD_TO_DEG);Serial.print("\t");
-            //Serial.print(ahrs_p*RAD_TO_DEG);Serial.print("\t");  
-            //Serial.print(ahrs_y*RAD_TO_DEG);Serial.print("\t");  
+            Serial.print(ahrs_r*RAD_TO_DEG);Serial.print("\t");
+            Serial.print(ahrs_p*RAD_TO_DEG);Serial.print("\t");  
+            Serial.print(ahrs_y*RAD_TO_DEG);Serial.print("\t");  
             //Serial3.print(ahrs_y*RAD_TO_DEG);Serial3.print("\t"); 
             //Serial.print(cos_rollcos_pitch);Serial.print("\t"); 
              
