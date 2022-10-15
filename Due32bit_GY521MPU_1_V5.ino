@@ -14,7 +14,7 @@
                                                ,double ,,float Lat,Lon error 9999999.9963922281796504452323604 ,,9999999.9995023947491795059296384
                                                ,gain kp GPS ,,yaw_bearing,,k1 kalman Altitude,, uthrottle/cos_rollcos_pitch
                                                
- 26/09/2565     write Due32bit_GY521MPU_1_V5_1  ,HMC5883sam3x8e.h
+ 26/09/2565     write Due32bit_GY521MPU_1_V5_1  ,HMC5883sam3x8e.h ,, i2c 1 pin scl1, sda1
  
 support : Arduino 1.5.8   Arduino Due 32 bit  , MPU6050  MS5611
 • Atmel SAM3X8E ARM Cortex-M3 CPU 32-bit a 84 MHz clock, ARM core microcontroller
