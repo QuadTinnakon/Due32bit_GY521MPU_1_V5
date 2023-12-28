@@ -1,7 +1,7 @@
 # Due32bit_GY521MPU_1_V5
 
 /*
- Test By tinnakon k  project ..
+ Test By tinnakon k  project ....
  
  [Videos](https://www.youtube.com/watch?v=N_tQC7pwRic)
  วีดีโอ !(https://youtu.be/N_tQC7pwRic)
